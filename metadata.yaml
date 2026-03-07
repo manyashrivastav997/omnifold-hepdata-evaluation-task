@@ -1,0 +1,350 @@
+datasets:
+  - dataset_name: multifold
+    file_name: multifold.h5
+    rows: 418014
+    columns: 200
+    purpose: Primary analysis dataset with full systematic uncertainty propagation for multifold unfolding
+    
+    observables:
+      dilepton_system:
+        - pT_ll
+        - pT_l1
+        - pT_l2
+        - eta_l1
+        - eta_l2
+        - phi_l1
+        - phi_l2
+        - y_ll
+      
+      track_jet_1:
+        - pT_trackj1
+        - y_trackj1
+        - phi_trackj1
+        - m_trackj1
+        - tau1_trackj1
+        - tau2_trackj1
+        - tau3_trackj1
+      
+      track_jet_2:
+        - pT_trackj2
+        - y_trackj2
+        - phi_trackj2
+        - m_trackj2
+        - tau1_trackj2
+        - tau2_trackj2
+        - tau3_trackj2
+      
+      target:
+        - target_dd
+    
+    weights:
+      nominal:
+        - weight_mc
+        - weights_nominal
+      
+      ensemble:
+        count: 100
+        pattern: weights_ensemble_{0..99}
+      
+      systematic:
+        data_driven:
+          - weights_dd
+        pileup:
+          - weights_pileup
+        muon:
+          - weights_muEffReco
+          - weights_muEffIso
+          - weights_muEffTrack
+          - weights_muEffTrig
+          - weights_muCalID
+          - weights_muCalMS
+          - weights_muCalResBias
+          - weights_muCalScale
+        tracking:
+          - weights_trackEffMain
+          - weights_trackEffJet
+          - weights_trackFake
+          - weights_trackPtScale
+        theory:
+          - weights_theoryPSjet
+          - weights_theoryPSsoft
+          - weights_theoryMPI
+          - weights_theoryPSscale
+          - weights_theoryAlphaS
+          - weights_theoryQCD
+          - weights_theoryPDF
+        background:
+          - weights_topBackground
+          - weights_lumi
+      
+      bootstrap:
+        mc:
+          count: 25
+          pattern: weights_bootstrap_mc_{0..24}
+        data:
+          count: 25
+          pattern: weights_bootstrap_data_{0..24}
+    
+    metadata_columns:
+      - Ntracks_trackj1
+      - Ntracks_trackj2
+    
+    data_types:
+      observables: float32
+      weights_nominal: float32
+      weights_ensemble: float32
+      weights_systematic: float32
+      weights_bootstrap: float64
+      metadata: int32
+    
+    block_structure:
+      - block: 0
+        shape: [418014, 148]
+        dtype: float32
+        content: observables and nominal/ensemble/systematic weights
+      - block: 1
+        shape: [418014, 50]
+        dtype: float64
+        content: bootstrap weights (MC and data)
+      - block: 2
+        shape: [418014, 2]
+        dtype: int32
+        content: metadata (track counts)
+
+  - dataset_name: multifold_sherpa
+    file_name: multifold_sherpa.h5
+    rows: 326430
+    columns: 51
+    purpose: Alternative generator (Sherpa) sample for closure tests and generator comparison
+    
+    observables:
+      dilepton_system:
+        - pT_ll
+        - pT_l1
+        - pT_l2
+        - eta_l1
+        - eta_l2
+        - phi_l1
+        - phi_l2
+        - y_ll
+      
+      track_jet_1:
+        - pT_trackj1
+        - y_trackj1
+        - phi_trackj1
+        - m_trackj1
+        - tau1_trackj1
+        - tau2_trackj1
+        - tau3_trackj1
+      
+      track_jet_2:
+        - pT_trackj2
+        - y_trackj2
+        - phi_trackj2
+        - m_trackj2
+        - tau1_trackj2
+        - tau2_trackj2
+        - tau3_trackj2
+    
+    weights:
+      nominal:
+        - weight_mc
+        - weights_nominal
+      
+      bootstrap:
+        mc:
+          count: 25
+          pattern: weights_bootstrap_mc_{0..24}
+    
+    metadata_columns:
+      - Ntracks_trackj1
+      - Ntracks_trackj2
+    
+    data_types:
+      observables: float32
+      weights_nominal_mc: float32
+      weights_nominal_analysis: float64
+      weights_bootstrap: float64
+      metadata: int32
+    
+    block_structure:
+      - block: 0
+        shape: [326430, 23]
+        dtype: float32
+        content: observables and weight_mc
+      - block: 1
+        shape: [326430, 26]
+        dtype: float64
+        content: weights_nominal and bootstrap weights
+      - block: 2
+        shape: [326430, 2]
+        dtype: int32
+        content: metadata (track counts)
+
+  - dataset_name: multifold_nonDY
+    file_name: multifold_nonDY.h5
+    rows: 433397
+    columns: 26
+    purpose: Background process sample (non-Drell-Yan events) for background subtraction
+    
+    observables:
+      dilepton_system:
+        - pT_ll
+        - pT_l1
+        - pT_l2
+        - eta_l1
+        - eta_l2
+        - phi_l1
+        - phi_l2
+        - y_ll
+      
+      track_jet_1:
+        - pT_trackj1
+        - y_trackj1
+        - phi_trackj1
+        - m_trackj1
+        - tau1_trackj1
+        - tau2_trackj1
+        - tau3_trackj1
+      
+      track_jet_2:
+        - pT_trackj2
+        - y_trackj2
+        - phi_trackj2
+        - m_trackj2
+        - tau1_trackj2
+        - tau2_trackj2
+        - tau3_trackj2
+    
+    weights:
+      nominal:
+        - weight_mc
+        - weights_nominal
+    
+    metadata_columns:
+      - Ntracks_trackj1
+      - Ntracks_trackj2
+    
+    data_types:
+      observables: float32
+      weights: float32
+      metadata: int32
+    
+    block_structure:
+      - block: 0
+        shape: [433397, 24]
+        dtype: float32
+        content: observables and weights
+      - block: 1
+        shape: [433397, 2]
+        dtype: int32
+        content: metadata (track counts)
+
+schema_version: "1.0"
+
+dataset_provenance:
+  analysis_name: "OmniFold dilepton track jet unfolding"
+  analysis_type: "OmniFold unfolding"
+  experiment: unknown
+  generator:
+    multifold: unknown
+    multifold_sherpa: Sherpa
+    multifold_nonDY: unknown
+  generator_version: unknown
+  production_software: unknown
+  production_date: unknown
+  data_tier: analysis-level
+  detector_level: unknown
+
+normalization:
+  integrated_luminosity: unknown
+  luminosity_units: fb^-1
+  cross_section_units: pb
+  weight_definition:
+    weight_mc: "Generator-level event weight (exact normalization unknown)"
+    weights_nominal: "Analysis weight including corrections (exact components unknown)"
+  normalization_applied: unknown
+
+event_selection:
+  dilepton_selection:
+    lepton_flavor: unknown
+    charge_requirement: unknown
+    isolation_requirement: unknown
+  kinematic_cuts:
+    pT_min: unknown
+    eta_max: unknown
+  jet_definition:
+    algorithm: unknown
+    radius_parameter: unknown
+    pT_threshold: unknown
+    track_selection: unknown
+  trigger_requirements: unknown
+
+systematic_summary:
+  systematic_sources_present:
+    - pileup
+    - muon_efficiency
+    - muon_calibration
+    - tracking_efficiency
+    - theory_uncertainty
+    - luminosity
+    - background_normalization
+  ensemble_weights_present: true
+  bootstrap_weights_present: true
+  systematic_correlation_information: unknown
+
+usage_guidelines:
+  recommended_nominal_weight: weights_nominal
+  use_bootstrap_for_statistical_uncertainty: true
+  use_ensemble_for_systematic_uncertainty: true
+  combine_with_background_dataset: multifold_nonDY.h5
+  compatible_datasets:
+    - multifold.h5
+    - multifold_sherpa.h5
+    - multifold_nonDY.h5
+  limitations:
+    - Missing normalization metadata
+    - Missing OmniFold training metadata
+    - Missing systematic correlation definitions
+
+schema_notes:
+  purpose: "Provide complete metadata schema for OmniFold weight datasets to enable reuse, reproducibility, and correct uncertainty propagation"
+  unknown_value_policy: "Unknown fields explicitly marked as 'unknown' rather than guessed"
+  schema_design_principle: "Structure supports reproducibility without fabricating missing metadata"
+
+common_observables:
+  - pT_ll
+  - pT_l1
+  - pT_l2
+  - eta_l1
+  - eta_l2
+  - phi_l1
+  - phi_l2
+  - y_ll
+  - pT_trackj1
+  - y_trackj1
+  - phi_trackj1
+  - m_trackj1
+  - tau1_trackj1
+  - tau2_trackj1
+  - tau3_trackj1
+  - pT_trackj2
+  - y_trackj2
+  - phi_trackj2
+  - m_trackj2
+  - tau1_trackj2
+  - tau2_trackj2
+  - tau3_trackj2
+
+required_weights:
+  - weight_mc
+  - weights_nominal
+
+optional_weights:
+  - ensemble_weights
+  - systematic_weights
+  - bootstrap_weights
+
+common_metadata:
+  - Ntracks_trackj1
+  - Ntracks_trackj2
